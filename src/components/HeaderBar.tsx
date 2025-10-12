@@ -1,16 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Search, User, ShoppingBag } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 
-const HeaderBar: React.FC = () => {
+interface HeaderBarProps {
+  mobileMenuOpen?: boolean;
+  onMobileMenuToggle?: () => void;
+}
+
+const HeaderBar: React.FC<HeaderBarProps> = ({
+  mobileMenuOpen = false,
+  onMobileMenuToggle,
+}) => {
   return (
     <div className="w-full">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
         <div className="relative flex items-center justify-between h-16 md:h-20">
-          {/* Left Section - Search */}
+          {/* Left Section - Mobile Menu + Search */}
           <div className="flex items-center flex-1">
+            {/* Mobile Menu Button - only visible on mobile */}
+            <button
+              onClick={onMobileMenuToggle}
+              className="lg:hidden p-3 hover:bg-gray-100 rounded-lg transition-colors mr-2"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5 md:w-6 md:h-6" />
+              ) : (
+                <Menu className="w-5 h-5 md:w-6 md:h-6" />
+              )}
+            </button>
+
+            {/* Search Button */}
             <button
               className="p-3 hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Search"

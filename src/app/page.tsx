@@ -1,5 +1,4 @@
-import HeaderBar from "@/components/HeaderBar";
-import MenuBar from "@/components/MenuBar";
+import NavigationWrapper from "@/components/NavigationWrapper";
 import HeroCarousel from "@/components/HeroCarousel";
 import ProductSection from "@/components/ProductSection";
 import ProductRow from "@/components/ProductRow";
@@ -9,11 +8,8 @@ import { latestProducts } from "@/data/products";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <HeaderBar />
-
-      {/* Navigation Menu */}
-      <MenuBar />
+      {/* Header and Navigation */}
+      <NavigationWrapper />
 
       {/* Hero Carousel */}
       <HeroCarousel />

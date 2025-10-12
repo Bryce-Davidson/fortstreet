@@ -49,7 +49,7 @@ const MenuBarPopup: React.FC<MenuBarPopupProps> = ({
                             <li key={item}>
                               <a
                                 href="#"
-                                className="text-sm text-gray-600 hover:text-black transition-colors"
+                                className="text-sm text-gray-600 hover:text-black hover:bg-gray-100 transition-colors block py-2 px-3 rounded-md"
                               >
                                 {item}
                               </a>
@@ -68,7 +68,7 @@ const MenuBarPopup: React.FC<MenuBarPopupProps> = ({
                   <li key={item}>
                     <a
                       href="#"
-                      className="text-sm text-gray-600 hover:text-black transition-colors"
+                      className="text-sm text-gray-600 hover:text-black hover:bg-gray-100 transition-colors block py-2 px-3 rounded-md"
                     >
                       {item}
                     </a>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import MenuBarPopup from "./MenuBarPopup";
 
 // Easily configurable menu items
@@ -78,9 +78,19 @@ export const submenuContent: Record<
   },
 };
 
-const MenuBar: React.FC = () => {
+interface MenuBarProps {
+  mobileMenuOpen?: boolean;
+  onMobileMenuClose?: () => void;
+}
+
+const MenuBar: React.FC<MenuBarProps> = ({
+  mobileMenuOpen = false,
+  onMobileMenuClose,
+}) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expandedMobileItems, setExpandedMobileItems] = useState<Set<string>>(
+    new Set()
+  );
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = (item: string) => {
@@ -114,6 +124,16 @@ const MenuBar: React.FC = () => {
     setActiveMenu(null);
   };
 
+  const toggleMobileSubmenu = (item: string) => {
+    const newExpanded = new Set(expandedMobileItems);
+    if (newExpanded.has(item)) {
+      newExpanded.delete(item);
+    } else {
+      newExpanded.add(item);
+    }
+    setExpandedMobileItems(newExpanded);
+  };
+
   return (
     <>
       <nav className="relative bg-white border-b border-gray-200">
@@ -138,23 +158,6 @@ const MenuBar: React.FC = () => {
               ))}
             </ul>
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center justify-between h-16">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-3 hover:bg-gray-100 rounded-lg transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-            <span className="text-sm font-medium">MENU</span>
-            <div className="w-12" /> {/* Spacer for centering */}
-          </div>
         </div>
 
         {/* Desktop Popup Menu */}
@@ -175,16 +178,19 @@ const MenuBar: React.FC = () => {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-white">
+          {/* Mobile Menu Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <span className="text-lg font-medium">MENU</span>
             <button
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={onMobileMenuClose}
               className="p-3 hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Close menu"
             >
               <X className="w-6 h-6" />
             </button>
           </div>
+
+          {/* Mobile Menu Content */}
           <div className="overflow-y-auto h-[calc(100vh-89px)]">
             <ul className="p-6">
               {menuItems.map((item) => (
@@ -192,12 +198,88 @@ const MenuBar: React.FC = () => {
                   key={item}
                   className="border-b border-gray-100 last:border-0"
                 >
-                  <button className="flex items-center justify-between w-full py-5 text-left text-base font-medium">
-                    {item}
-                    {submenuContent[item] && (
-                      <ChevronDown className="w-4 h-4" />
+                  <div>
+                    <button
+                      className="flex items-center justify-between w-full py-5 text-left text-base font-medium"
+                      onClick={() =>
+                        submenuContent[item]
+                          ? toggleMobileSubmenu(item)
+                          : undefined
+                      }
+                    >
+                      {item}
+                      {submenuContent[item] && (
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            expandedMobileItems.has(item) ? "rotate-180" : ""
+                          }`}
+                        />
+                      )}
+                    </button>
+
+                    {/* Expandable Submenu */}
+                    {submenuContent[item] && expandedMobileItems.has(item) && (
+                      <div className="pb-4 pl-4 pr-4">
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          {submenuContent[item].categories ? (
+                            <div className="space-y-6">
+                              {submenuContent[item].categories!.map(
+                                (category, categoryIndex) => (
+                                  <div key={category}>
+                                    <h4 className="font-semibold text-sm mb-3 text-gray-900">
+                                      {category}
+                                    </h4>
+                                    <ul className="space-y-2">
+                                      {submenuContent[item]
+                                        .items!.slice(
+                                          categoryIndex *
+                                            Math.ceil(
+                                              submenuContent[item].items!
+                                                .length /
+                                                submenuContent[item].categories!
+                                                  .length
+                                            ),
+                                          (categoryIndex + 1) *
+                                            Math.ceil(
+                                              submenuContent[item].items!
+                                                .length /
+                                                submenuContent[item].categories!
+                                                  .length
+                                            )
+                                        )
+                                        .map((subItem) => (
+                                          <li key={subItem}>
+                                            <a
+                                              href="#"
+                                              className="text-sm text-gray-600 hover:text-black transition-colors block py-1"
+                                            >
+                                              {subItem}
+                                            </a>
+                                          </li>
+                                        ))}
+                                    </ul>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          ) : (
+                            <ul className="space-y-2">
+                              {submenuContent[item].items!.map((subItem) => (
+                                <li key={subItem}>
+                                  <a
+                                    href="#"
+                                    className="text-sm text-gray-600 hover:text-black transition-colors block py-1"
+                                  >
+                                    {subItem}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
                     )}
-                  </button>
+                  </div>
                 </li>
               ))}
             </ul>
