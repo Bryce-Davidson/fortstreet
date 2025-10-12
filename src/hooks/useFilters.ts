@@ -35,6 +35,9 @@ export const useFilters = (products: Product[]) => {
   }, [searchParams]);
 
   const [filters, setFilters] = useState<FilterState>(initializeFilters);
+  const [searchQuery, setSearchQuery] = useState<string>(
+    searchParams.get("search") || ""
+  );
 
   // Update URL when filters change
   const updateFilters = useCallback(
@@ -54,13 +57,48 @@ export const useFilters = (products: Product[]) => {
       );
       newFilters.priceRanges.forEach((value) => params.append("price", value));
 
+      // Add search query to params if it exists
+      if (searchQuery.trim()) {
+        params.set("search", searchQuery.trim());
+      }
+
       // Update URL without page reload
       const newUrl = params.toString()
         ? `/collections?${params.toString()}`
         : "/collections";
       router.push(newUrl, { scroll: false });
     },
-    [router]
+    [router, searchQuery]
+  );
+
+  // Update search query and URL
+  const updateSearchQuery = useCallback(
+    (query: string) => {
+      setSearchQuery(query);
+
+      // Create new URLSearchParams
+      const params = new URLSearchParams();
+
+      // Add current filters to params
+      filters.availability.forEach((value) =>
+        params.append("availability", value)
+      );
+      filters.brands.forEach((value) => params.append("brand", value));
+      filters.categories.forEach((value) => params.append("category", value));
+      filters.priceRanges.forEach((value) => params.append("price", value));
+
+      // Add search query to params if it exists
+      if (query.trim()) {
+        params.set("search", query.trim());
+      }
+
+      // Update URL without page reload
+      const newUrl = params.toString()
+        ? `/collections?${params.toString()}`
+        : "/collections";
+      router.push(newUrl, { scroll: false });
+    },
+    [router, filters]
   );
 
   // Clear all filters
@@ -71,12 +109,31 @@ export const useFilters = (products: Product[]) => {
       categories: [],
       priceRanges: [],
     };
+    setSearchQuery("");
     updateFilters(emptyFilters);
   }, [updateFilters]);
 
   // Filter products based on current filters
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      // Search query filter
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase().trim();
+        const searchableText = [
+          product.name,
+          product.brand,
+          product.description,
+          product.category,
+          ...(product.tags || []),
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        if (!searchableText.includes(query)) {
+          return false;
+        }
+      }
+
       // Availability filter
       if (
         filters.availability.length > 0 &&
@@ -111,7 +168,7 @@ export const useFilters = (products: Product[]) => {
 
       return true;
     });
-  }, [products, filters]);
+  }, [products, filters, searchQuery]);
 
   // Calculate product counts for each filter option
   const productCounts = useMemo(() => {
@@ -147,15 +204,18 @@ export const useFilters = (products: Product[]) => {
 
   return {
     filters,
+    searchQuery,
     filteredProducts,
     productCounts,
     updateFilters,
+    updateSearchQuery,
     clearAllFilters,
     totalResults: filteredProducts.length,
     hasActiveFilters:
       filters.availability.length > 0 ||
       filters.brands.length > 0 ||
       filters.categories.length > 0 ||
-      filters.priceRanges.length > 0,
+      filters.priceRanges.length > 0 ||
+      searchQuery.trim().length > 0,
   };
 };

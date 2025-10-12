@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 
 interface HeaderBarProps {
@@ -43,7 +44,10 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
 
           {/* Center Section - Logo */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-            <div className="relative h-12 md:h-16">
+            <Link
+              href="/"
+              className="relative h-12 md:h-16 hover:opacity-80 transition-opacity"
+            >
               <Image
                 src="/logo.svg"
                 alt="Fort Street Cycle"
@@ -53,7 +57,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
                 style={{ width: "auto", height: "100%" }}
                 priority
               />
-            </div>
+            </Link>
           </div>
 
           {/* Right Section - Account and Cart */}

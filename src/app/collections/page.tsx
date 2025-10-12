@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Filter, SlidersHorizontal } from "lucide-react";
 import NavigationWrapper from "@/components/NavigationWrapper";
 import FilterSideBar from "@/components/FilterSideBar";
+import FilterSearchBox from "@/components/FilterSearchBox";
 import ProductGridCard from "@/components/ProductGridCard";
 import { allProducts } from "@/data/products";
 import { useFilters } from "@/hooks/useFilters";
@@ -12,9 +13,11 @@ const CollectionsPage: React.FC = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const {
     filters,
+    searchQuery,
     filteredProducts,
     productCounts,
     updateFilters,
+    updateSearchQuery,
     clearAllFilters,
     totalResults,
     hasActiveFilters,
@@ -36,7 +39,7 @@ const CollectionsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="py-8 border-b border-gray-200">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Collections</h1>
               <p className="mt-2 text-sm text-gray-600">
@@ -44,6 +47,13 @@ const CollectionsPage: React.FC = () => {
                 {hasActiveFilters && " found"}
               </p>
             </div>
+
+            {/* Search Box */}
+            <FilterSearchBox
+              searchQuery={searchQuery}
+              onSearchChange={updateSearchQuery}
+              placeholder="Search products..."
+            />
 
             {/* Mobile Filter Toggle */}
             <button
@@ -57,7 +67,8 @@ const CollectionsPage: React.FC = () => {
                   {filters.availability.length +
                     filters.brands.length +
                     filters.categories.length +
-                    filters.priceRanges.length}
+                    filters.priceRanges.length +
+                    (searchQuery.trim() ? 1 : 0)}
                 </span>
               )}
             </button>
