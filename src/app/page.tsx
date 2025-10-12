@@ -15,7 +15,7 @@ export default function Home() {
       <HeroCarousel />
 
       {/* Latest Products Section */}
-      <ProductSection title="LATEST" viewAllLink="/latest">
+      <ProductSection title="LATEST" viewAllLink="/collections">
         <ProductRow>
           {latestProducts.map((product) => (
             <ProductRowCard key={product.id} product={product} />

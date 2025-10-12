@@ -48,7 +48,7 @@ const MenuBarPopup: React.FC<MenuBarPopupProps> = ({
                           .map((item) => (
                             <li key={item}>
                               <a
-                                href="#"
+                                href="/collections"
                                 className="text-sm text-gray-600 hover:text-black hover:bg-gray-100 transition-colors block py-2 px-3 rounded-md"
                               >
                                 {item}
@@ -67,7 +67,7 @@ const MenuBarPopup: React.FC<MenuBarPopupProps> = ({
                 {content.items.map((item) => (
                   <li key={item}>
                     <a
-                      href="#"
+                      href="/collections"
                       className="text-sm text-gray-600 hover:text-black hover:bg-gray-100 transition-colors block py-2 px-3 rounded-md"
                     >
                       {item}

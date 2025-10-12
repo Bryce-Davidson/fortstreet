@@ -4,6 +4,23 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, X } from "lucide-react";
 import MenuBarPopup from "./MenuBarPopup";
 
+// Helper function to get menu item links
+const getMenuItemLink = (item: string): string => {
+  const itemMap: Record<string, string> = {
+    LATEST: "/collections?category=latest",
+    BRANDS: "/collections",
+    "BIKES & FRAMES":
+      "/collections?category=road-bikes&category=mountain-bikes&category=gravel-bikes",
+    "WHEELS & TYRES": "/collections?category=wheels-tyres",
+    PARTS: "/collections?category=parts",
+    ACCESSORIES: "/collections?category=accessories",
+    APPAREL: "/collections?category=apparel",
+    NUTRITION: "/collections?category=nutrition",
+    SALE: "/collections?price=under-100&price=100-500",
+  };
+  return itemMap[item] || "/collections";
+};
+
 // Easily configurable menu items
 const menuItems = [
   "LATEST",
@@ -156,10 +173,15 @@ const MenuBar: React.FC<MenuBarProps> = ({
                   onMouseLeave={handleMouseLeave}
                 >
                   <button className="flex items-center gap-1 py-5 text-sm font-medium text-gray-700 hover:text-black transition-colors">
-                    {item}
-                    {submenuContent[item] && (
-                      <ChevronDown className="w-3 h-3" />
-                    )}
+                    <a
+                      href={getMenuItemLink(item)}
+                      className="flex items-center gap-1"
+                    >
+                      {item}
+                      {submenuContent[item] && (
+                        <ChevronDown className="w-3 h-3" />
+                      )}
+                    </a>
                   </button>
                 </li>
               ))}
@@ -211,7 +233,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
                       onClick={() =>
                         submenuContent[item]
                           ? toggleMobileSubmenu(item)
-                          : undefined
+                          : (window.location.href = getMenuItemLink(item))
                       }
                     >
                       {item}
@@ -257,7 +279,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
                                         .map((subItem) => (
                                           <li key={subItem}>
                                             <a
-                                              href="#"
+                                              href="/collections"
                                               className="text-sm text-gray-600 hover:text-black transition-colors block py-1"
                                             >
                                               {subItem}
@@ -274,7 +296,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
                               {submenuContent[item].items!.map((subItem) => (
                                 <li key={subItem}>
                                   <a
-                                    href="#"
+                                    href="/collections"
                                     className="text-sm text-gray-600 hover:text-black transition-colors block py-1"
                                   >
                                     {subItem}
