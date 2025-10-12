@@ -1,6 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import ProductPageClient from "./ProductPageClient";
+import ProductPageClient from "@/app/product/[slug]/ProductPageClient";
 import { allProducts } from "@/data/products";
 
 interface ProductPageProps {
