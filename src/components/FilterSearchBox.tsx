@@ -8,6 +8,7 @@ interface FilterSearchBoxProps {
   onSearchChange: (query: string) => void;
   placeholder?: string;
   autoFocus?: boolean;
+  fullWidth?: boolean;
 }
 
 const FilterSearchBox: React.FC<FilterSearchBoxProps> = ({
@@ -15,6 +16,7 @@ const FilterSearchBox: React.FC<FilterSearchBoxProps> = ({
   onSearchChange,
   placeholder = "Search products...",
   autoFocus = false,
+  fullWidth = false,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +31,7 @@ const FilterSearchBox: React.FC<FilterSearchBoxProps> = ({
   };
 
   return (
-    <div className="relative flex-1 max-w-md">
+    <div className={`relative ${fullWidth ? "w-full" : "flex-1 max-w-md"}`}>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className="h-4 w-4 text-gray-400" />

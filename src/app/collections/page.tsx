@@ -60,7 +60,8 @@ const CollectionsPageContent: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="py-8 border-b border-gray-200">
-          <div className="flex items-center justify-between gap-4">
+          {/* Desktop Layout: All in one row */}
+          <div className="hidden lg:flex items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Collections</h1>
               <p className="mt-2 text-sm text-gray-600">
@@ -76,24 +77,51 @@ const CollectionsPageContent: React.FC = () => {
               placeholder="Search products..."
               autoFocus={shouldAutoFocus}
             />
+          </div>
 
-            {/* Mobile Filter Toggle */}
-            <button
-              onClick={handleMobileFiltersToggle}
-              className="lg:hidden flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              <span className="text-sm font-medium">Filters</span>
-              {hasActiveFilters && (
-                <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
-                  {filters.availability.length +
-                    filters.brands.length +
-                    filters.categories.length +
-                    filters.priceRanges.length +
-                    (searchQuery.trim() ? 1 : 0)}
-                </span>
-              )}
-            </button>
+          {/* Mobile Layout: Stacked */}
+          <div className="lg:hidden">
+            {/* Title and Filter Button Row */}
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Collections
+                </h1>
+                <p className="mt-2 text-sm text-gray-600">
+                  {totalResults} {totalResults === 1 ? "product" : "products"}
+                  {hasActiveFilters && " found"}
+                </p>
+              </div>
+
+              {/* Mobile Filter Toggle */}
+              <button
+                onClick={handleMobileFiltersToggle}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                <span className="text-sm font-medium">Filters</span>
+                {hasActiveFilters && (
+                  <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
+                    {filters.availability.length +
+                      filters.brands.length +
+                      filters.categories.length +
+                      filters.priceRanges.length +
+                      (searchQuery.trim() ? 1 : 0)}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {/* Full-width Search Box Row */}
+            <div className="w-full mt-4">
+              <FilterSearchBox
+                searchQuery={searchQuery}
+                onSearchChange={updateSearchQuery}
+                placeholder="Search products..."
+                autoFocus={shouldAutoFocus}
+                fullWidth={true}
+              />
+            </div>
           </div>
         </div>
 
