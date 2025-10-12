@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Filter, SlidersHorizontal } from "lucide-react";
 import NavigationWrapper from "@/components/NavigationWrapper";
@@ -10,7 +10,7 @@ import ProductGridCard from "@/components/ProductGridCard";
 import { allProducts } from "@/data/products";
 import { useFilters } from "@/hooks/useFilters";
 
-const CollectionsPage: React.FC = () => {
+const CollectionsPageContent: React.FC = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [shouldAutoFocus, setShouldAutoFocus] = useState(false);
   const searchParams = useSearchParams();
@@ -149,6 +149,49 @@ const CollectionsPage: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// Loading component for Suspense fallback
+const CollectionsPageLoading: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-white">
+      <NavigationWrapper />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-8 border-b border-gray-200">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Collections</h1>
+              <p className="mt-2 text-sm text-gray-600">Loading products...</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex">
+          <div className="flex-1 lg:pl-8">
+            <div className="py-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
+                {/* Loading skeleton */}
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CollectionsPage: React.FC = () => {
+  return (
+    <Suspense fallback={<CollectionsPageLoading />}>
+      <CollectionsPageContent />
+    </Suspense>
   );
 };
 
