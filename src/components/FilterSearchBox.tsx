@@ -1,19 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Search, X } from "lucide-react";
 
 interface FilterSearchBoxProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   placeholder?: string;
+  autoFocus?: boolean;
 }
 
 const FilterSearchBox: React.FC<FilterSearchBoxProps> = ({
   searchQuery,
   onSearchChange,
   placeholder = "Search products...",
+  autoFocus = false,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus]);
+
   const handleClear = () => {
     onSearchChange("");
   };
@@ -25,6 +35,7 @@ const FilterSearchBox: React.FC<FilterSearchBoxProps> = ({
           <Search className="h-4 w-4 text-gray-400" />
         </div>
         <input
+          ref={inputRef}
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}

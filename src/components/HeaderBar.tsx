@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 
 interface HeaderBarProps {
@@ -14,6 +15,12 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
   mobileMenuOpen = false,
   onMobileMenuToggle,
 }) => {
+  const router = useRouter();
+
+  const handleSearchClick = () => {
+    router.push("/collections?focus=search");
+  };
+
   return (
     <div className="w-full">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
@@ -35,7 +42,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
 
             {/* Search Button */}
             <button
-              className="p-3 hover:bg-gray-100 rounded-lg transition-colors"
+              onClick={handleSearchClick}
+              className="p-3 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
               aria-label="Search"
             >
               <Search className="w-5 h-5 md:w-6 md:h-6" />

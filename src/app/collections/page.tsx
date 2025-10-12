@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Filter, SlidersHorizontal } from "lucide-react";
 import NavigationWrapper from "@/components/NavigationWrapper";
 import FilterSideBar from "@/components/FilterSideBar";
@@ -11,6 +12,8 @@ import { useFilters } from "@/hooks/useFilters";
 
 const CollectionsPage: React.FC = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [shouldAutoFocus, setShouldAutoFocus] = useState(false);
+  const searchParams = useSearchParams();
   const {
     filters,
     searchQuery,
@@ -22,6 +25,21 @@ const CollectionsPage: React.FC = () => {
     totalResults,
     hasActiveFilters,
   } = useFilters(allProducts);
+
+  // Check if we should auto-focus and clear filters when coming from header search
+  useEffect(() => {
+    const focusParam = searchParams.get("focus");
+    if (focusParam === "search") {
+      // Clear all filters when coming from header search
+      clearAllFilters();
+      setShouldAutoFocus(true);
+
+      // Remove the focus parameter from URL after handling it
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete("focus");
+      window.history.replaceState({}, "", newUrl.pathname + newUrl.search);
+    }
+  }, [searchParams, clearAllFilters]);
 
   const handleMobileFiltersToggle = () => {
     setMobileFiltersOpen(!mobileFiltersOpen);
@@ -53,6 +71,7 @@ const CollectionsPage: React.FC = () => {
               searchQuery={searchQuery}
               onSearchChange={updateSearchQuery}
               placeholder="Search products..."
+              autoFocus={shouldAutoFocus}
             />
 
             {/* Mobile Filter Toggle */}
