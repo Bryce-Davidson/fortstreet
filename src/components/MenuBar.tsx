@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, X } from "lucide-react";
 import MenuBarPopup from "./MenuBarPopup";
 
@@ -133,6 +133,13 @@ const MenuBar: React.FC<MenuBarProps> = ({
     }
     setExpandedMobileItems(newExpanded);
   };
+
+  // Reset expanded mobile items when mobile menu closes
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setExpandedMobileItems(new Set());
+    }
+  }, [mobileMenuOpen]);
 
   return (
     <>
