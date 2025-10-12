@@ -10,6 +10,9 @@ import ProductGridCard from "@/components/ProductGridCard";
 import { allProducts } from "@/data/products";
 import { useFilters } from "@/hooks/useFilters";
 
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
 const CollectionsPageContent: React.FC = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [shouldAutoFocus, setShouldAutoFocus] = useState(false);
