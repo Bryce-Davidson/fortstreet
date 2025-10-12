@@ -23,6 +23,36 @@ export default function Home() {
         </ProductRow>
       </ProductSection>
 
+      {/* Road Bikes Section */}
+      <ProductSection
+        title="ROAD BIKES"
+        viewAllLink="/collections?category=road-bikes"
+      >
+        <ProductRow>
+          {allProducts
+            .filter((product) => product.category === "road-bikes")
+            .slice(0, 6)
+            .map((product) => (
+              <ProductRowCard key={product.id} product={product} />
+            ))}
+        </ProductRow>
+      </ProductSection>
+
+      {/* Mountain Bikes Section */}
+      <ProductSection
+        title="MOUNTAIN BIKES"
+        viewAllLink="/collections?category=mountain-bikes"
+      >
+        <ProductRow>
+          {allProducts
+            .filter((product) => product.category === "mountain-bikes")
+            .slice(0, 6)
+            .map((product) => (
+              <ProductRowCard key={product.id} product={product} />
+            ))}
+        </ProductRow>
+      </ProductSection>
+
       {/* Info Bar */}
       <div className="bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-4 sm:px-6 py-12 md:py-16">
