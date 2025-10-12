@@ -6,11 +6,11 @@ import { Search, User, ShoppingBag } from "lucide-react";
 
 const HeaderBar: React.FC = () => {
   return (
-    <div className="w-full bg-white border-b border-gray-200">
-      <div className="container mx-auto px-6 sm:px-8 md:px-12">
-        <div className="flex items-center justify-between h-16 md:h-20">
+    <div className="w-full">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
+        <div className="relative flex items-center justify-between h-16 md:h-20">
           {/* Left Section - Search */}
-          <div className="flex items-center">
+          <div className="flex items-center flex-1">
             <button
               className="p-3 hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Search"
@@ -20,8 +20,8 @@ const HeaderBar: React.FC = () => {
           </div>
 
           {/* Center Section - Logo */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-            <div className="relative h-10 md:h-14">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+            <div className="relative h-12 md:h-16">
               <Image
                 src="/logo.svg"
                 alt="Fort Street Cycle"
@@ -35,7 +35,7 @@ const HeaderBar: React.FC = () => {
           </div>
 
           {/* Right Section - Account and Cart */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-1 justify-end">
             <button
               className="p-3 hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Account"

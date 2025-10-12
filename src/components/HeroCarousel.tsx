@@ -18,8 +18,7 @@ export interface CarouselSlide {
 const slides: CarouselSlide[] = [
   {
     id: 1,
-    image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop",
+    image: "/hero_image_001.webp",
     title: "NEW ARRIVALS",
     subtitle: "Discover the latest bikes and gear",
     buttonText: "SHOP NOW",
@@ -28,8 +27,7 @@ const slides: CarouselSlide[] = [
   },
   {
     id: 2,
-    image:
-      "https://images.unsplash.com/photo-1553978297-833d09932d31?w=1600&h=900&fit=crop",
+    image: "/hero_image_002.webp",
     title: "ENGINEERED FOR SPEED",
     subtitle: "New race arrivals",
     buttonText: "SHOP ATTAQUER",
@@ -38,8 +36,7 @@ const slides: CarouselSlide[] = [
   },
   {
     id: 3,
-    image:
-      "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=1600&h=900&fit=crop",
+    image: "/hero_image_003.webp",
     title: "SUMMER SALE",
     subtitle: "Up to 50% off selected items",
     buttonText: "SHOP SALE",
@@ -54,14 +51,17 @@ const HeroCarousel: React.FC = () => {
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setIsPlaying(false); // Pause when user manually navigates
   }, []);
 
   const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setIsPlaying(false); // Pause when user manually navigates
   }, []);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
+    setIsPlaying(false); // Pause when user selects specific slide
   };
 
   const togglePlayPause = () => {
@@ -135,10 +135,10 @@ const HeroCarousel: React.FC = () => {
         ))}
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Hidden on mobile */}
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/80 hover:bg-white rounded-full flex items-center justify-center transition-colors shadow-lg"
+        className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-900/80 hover:bg-gray-900 text-white items-center justify-center transition-all"
         aria-label="Previous slide"
       >
         <svg
@@ -157,7 +157,7 @@ const HeroCarousel: React.FC = () => {
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/80 hover:bg-white rounded-full flex items-center justify-center transition-colors shadow-lg"
+        className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-900/80 hover:bg-gray-900 text-white items-center justify-center transition-all"
         aria-label="Next slide"
       >
         <svg

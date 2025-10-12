@@ -57,22 +57,22 @@ const ProductRowCard: React.FC<ProductRowCardProps> = ({ product }) => {
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
-          {/* Image Navigation Arrows */}
-          {product.images.length > 1 && isHovering && (
+          {/* Image Navigation Arrows - Always visible and subtle */}
+          {product.images.length > 1 && (
             <>
               <button
                 onClick={handlePrevImage}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all z-10"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 md:w-6 md:h-6 text-white hover:text-white/80 active:text-white/60 flex items-center justify-center transition-all z-10 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5 md:w-4 md:h-4" />
               </button>
               <button
                 onClick={handleNextImage}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md transition-all z-10"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 md:w-6 md:h-6 text-white hover:text-white/80 active:text-white/60 flex items-center justify-center transition-all z-10 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 aria-label="Next image"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5 md:w-4 md:h-4" />
               </button>
             </>
           )}

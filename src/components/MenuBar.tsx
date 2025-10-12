@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import MenuBarPopup from "./MenuBarPopup";
 
@@ -81,21 +81,43 @@ export const submenuContent: Record<
 const MenuBar: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = (item: string) => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
     if (submenuContent[item]) {
       setActiveMenu(item);
     }
   };
 
   const handleMouseLeave = () => {
+    // Add a small delay before closing to allow mouse to move to popup
+    timeoutRef.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 100);
+  };
+
+  const handlePopupMouseEnter = () => {
+    // Clear timeout when mouse enters popup
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  const handlePopupMouseLeave = () => {
     setActiveMenu(null);
   };
 
   return (
     <>
       <nav className="relative bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center justify-center h-16">
             <ul className="flex items-center gap-8">
@@ -137,11 +159,16 @@ const MenuBar: React.FC = () => {
 
         {/* Desktop Popup Menu */}
         {activeMenu && (
-          <MenuBarPopup
-            category={activeMenu}
-            content={submenuContent[activeMenu]}
-            onClose={() => setActiveMenu(null)}
-          />
+          <div
+            onMouseEnter={handlePopupMouseEnter}
+            onMouseLeave={handlePopupMouseLeave}
+          >
+            <MenuBarPopup
+              category={activeMenu}
+              content={submenuContent[activeMenu]}
+              onClose={() => {}}
+            />
+          </div>
         )}
       </nav>
 
