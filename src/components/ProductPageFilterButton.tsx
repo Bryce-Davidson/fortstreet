@@ -38,7 +38,7 @@ const ProductPageFilterButton: React.FC<ProductPageFilterButtonProps> = ({
         }
         ${
           !variant.available
-            ? "opacity-50 cursor-not-allowed line-through"
+            ? "opacity-50 cursor-not-allowed line-through text-gray-400 border-gray-200"
             : "cursor-pointer"
         }
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
@@ -51,11 +51,6 @@ const ProductPageFilterButton: React.FC<ProductPageFilterButtonProps> = ({
       {variant.priceModifier && variant.priceModifier > 0 && (
         <span className="ml-1 text-xs">
           (+${variant.priceModifier.toFixed(2)})
-        </span>
-      )}
-      {!variant.available && (
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xs text-red-500 font-medium">Out of Stock</span>
         </span>
       )}
     </button>
