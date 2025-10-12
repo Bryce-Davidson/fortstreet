@@ -4,6 +4,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+export interface ProductVariant {
+  id: string;
+  name: string;
+  value: string;
+  available: boolean;
+  priceModifier?: number; // Additional cost for this variant
+}
+
 export interface Product {
   id: string;
   brand: string;
@@ -15,6 +23,12 @@ export interface Product {
   category: string;
   availability: "in-stock" | "out-of-stock";
   tags: string[];
+  variants?: {
+    sizes?: ProductVariant[];
+    colors?: ProductVariant[];
+    [key: string]: ProductVariant[] | undefined;
+  };
+  slug: string;
 }
 
 interface ProductRowCardProps {
@@ -47,7 +61,7 @@ const ProductRowCard: React.FC<ProductRowCardProps> = ({ product }) => {
 
   return (
     <div className="flex-shrink-0 w-[280px] md:w-[300px] snap-start">
-      <a href={`/product/${product.id}`} className="group block">
+      <a href={`/product/${product.slug}`} className="group block">
         {/* Image Container */}
         <div
           className="relative aspect-square bg-gray-100 mb-6 overflow-hidden rounded-lg"

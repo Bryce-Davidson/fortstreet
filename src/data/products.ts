@@ -1,7 +1,8 @@
 import { Product } from "@/components/ProductRowCard";
+import { addSlugsToProducts } from "@/utils/generateSlugs";
 
 // Modern cycling product data with realistic specifications and metadata
-export const latestProducts: Product[] = [
+export const latestProducts: (Omit<Product, "slug"> & { slug?: string })[] = [
   {
     id: "specialized-tarmac-sl8",
     brand: "Specialized",
@@ -12,8 +13,40 @@ export const latestProducts: Product[] = [
     category: "road-bikes",
     availability: "in-stock",
     tags: ["carbon", "aero", "race", "disc-brake", "electronic"],
+    slug: "specialized-tarmac-sl8-expert",
+    variants: {
+      sizes: [
+        { id: "size-49", name: "Frame Size", value: "49cm", available: true },
+        { id: "size-52", name: "Frame Size", value: "52cm", available: true },
+        { id: "size-54", name: "Frame Size", value: "54cm", available: true },
+        { id: "size-56", name: "Frame Size", value: "56cm", available: false },
+        { id: "size-58", name: "Frame Size", value: "58cm", available: true },
+      ],
+      colors: [
+        {
+          id: "color-black",
+          name: "Color",
+          value: "Gloss Black",
+          available: true,
+        },
+        {
+          id: "color-red",
+          name: "Color",
+          value: "Flo Red",
+          available: true,
+          priceModifier: 200,
+        },
+        {
+          id: "color-blue",
+          name: "Color",
+          value: "Team Blue",
+          available: false,
+        },
+      ],
+    },
     images: [
       "https://via.placeholder.com/400x400/f3f4f6/374151?text=Specialized+Tarmac+SL8",
+      "https://via.placeholder.com/400x400/f3f4f6/374151?text=Specialized+Tarmac+Detail",
     ],
   },
   {
@@ -33,6 +66,16 @@ export const latestProducts: Product[] = [
       "wireless",
       "integrated-storage",
     ],
+    slug: "trek-madone-slr-9-etap",
+    variants: {
+      sizes: [
+        { id: "size-50", name: "Frame Size", value: "50cm", available: true },
+        { id: "size-52", name: "Frame Size", value: "52cm", available: true },
+        { id: "size-54", name: "Frame Size", value: "54cm", available: true },
+        { id: "size-56", name: "Frame Size", value: "56cm", available: true },
+        { id: "size-58", name: "Frame Size", value: "58cm", available: false },
+      ],
+    },
     images: [
       "https://via.placeholder.com/400x400/f3f4f6/374151?text=Trek+Madone+SLR",
     ],
@@ -47,6 +90,7 @@ export const latestProducts: Product[] = [
     category: "road-bikes",
     availability: "in-stock",
     tags: ["carbon", "lightweight", "climbing", "disc-brake", "hi-mod"],
+    slug: "cannondale-supersix-evo-hi-mod-lab71",
     images: [
       "https://via.placeholder.com/400x400/f3f4f6/374151?text=Cannondale+SuperSix",
     ],
@@ -61,6 +105,7 @@ export const latestProducts: Product[] = [
     category: "parts",
     availability: "in-stock",
     tags: ["electronic", "wireless", "12-speed", "dura-ace", "groupset"],
+    slug: "shimano-dura-ace-di2-12-speed-groupset",
     images: [
       "https://via.placeholder.com/400x400/f3f4f6/374151?text=Shimano+Dura-Ace",
     ],
@@ -75,6 +120,16 @@ export const latestProducts: Product[] = [
     category: "apparel",
     availability: "in-stock",
     tags: ["jersey", "pro-fit", "moisture-wicking", "aero"],
+    slug: "rapha-pro-team-training-jersey",
+    variants: {
+      sizes: [
+        { id: "size-xs", name: "Size", value: "XS", available: true },
+        { id: "size-s", name: "Size", value: "S", available: true },
+        { id: "size-m", name: "Size", value: "M", available: true },
+        { id: "size-l", name: "Size", value: "L", available: false },
+        { id: "size-xl", name: "Size", value: "XL", available: true },
+      ],
+    },
     images: [
       "https://via.placeholder.com/400x400/f3f4f6/374151?text=Rapha+Pro+Team",
     ],
@@ -89,45 +144,53 @@ export const latestProducts: Product[] = [
     category: "accessories",
     availability: "in-stock",
     tags: ["smart-trainer", "indoor", "zwift-compatible", "direct-drive"],
+    slug: "wahoo-kickr-smart-trainer-v6",
     images: [
       "https://via.placeholder.com/400x400/f3f4f6/374151?text=Wahoo+KICKR+V6",
     ],
   },
 ];
 
-export const roadBikesProducts: Product[] = [
-  {
-    id: "pinarello-dogma-f",
-    brand: "Pinarello",
-    name: "Dogma F Disk",
-    description:
-      "The bike of champions, featuring asymmetric frame design, TorayCa T1100 1K carbon fiber, and proven race geometry.",
-    price: 15999.0,
-    category: "road-bikes",
-    availability: "in-stock",
-    tags: ["carbon", "race", "asymmetric", "torayca", "disc-brake"],
-    images: [
-      "https://via.placeholder.com/400x400/f3f4f6/374151?text=Pinarello+Dogma+F",
-    ],
-  },
-  {
-    id: "cervelo-s5-disc",
-    brand: "Cervélo",
-    name: "S5 Disc Ultegra Di2",
-    description:
-      "Pure aerodynamic performance with integrated cockpit design and optimized tube shapes for maximum speed.",
-    price: 9500.0,
-    category: "road-bikes",
-    availability: "in-stock",
-    tags: ["carbon", "aero", "integrated-cockpit", "disc-brake", "electronic"],
-    images: [
-      "https://via.placeholder.com/400x400/f3f4f6/374151?text=Cervelo+S5+Disc",
-    ],
-  },
-];
+export const roadBikesProducts: (Omit<Product, "slug"> & { slug?: string })[] =
+  [
+    {
+      id: "pinarello-dogma-f",
+      brand: "Pinarello",
+      name: "Dogma F Disk",
+      description:
+        "The bike of champions, featuring asymmetric frame design, TorayCa T1100 1K carbon fiber, and proven race geometry.",
+      price: 15999.0,
+      category: "road-bikes",
+      availability: "in-stock",
+      tags: ["carbon", "race", "asymmetric", "torayca", "disc-brake"],
+      images: [
+        "https://via.placeholder.com/400x400/f3f4f6/374151?text=Pinarello+Dogma+F",
+      ],
+    },
+    {
+      id: "cervelo-s5-disc",
+      brand: "Cervélo",
+      name: "S5 Disc Ultegra Di2",
+      description:
+        "Pure aerodynamic performance with integrated cockpit design and optimized tube shapes for maximum speed.",
+      price: 9500.0,
+      category: "road-bikes",
+      availability: "in-stock",
+      tags: [
+        "carbon",
+        "aero",
+        "integrated-cockpit",
+        "disc-brake",
+        "electronic",
+      ],
+      images: [
+        "https://via.placeholder.com/400x400/f3f4f6/374151?text=Cervelo+S5+Disc",
+      ],
+    },
+  ];
 
 // Comprehensive product collection for collections page
-export const allProducts: Product[] = [
+const allProductsRaw: (Omit<Product, "slug"> & { slug?: string })[] = [
   ...latestProducts,
   ...roadBikesProducts,
 
@@ -554,3 +617,8 @@ export const allProducts: Product[] = [
     ],
   },
 ];
+
+// Add slugs to all products
+export const allProducts: Product[] = addSlugsToProducts(
+  allProductsRaw
+) as Product[];

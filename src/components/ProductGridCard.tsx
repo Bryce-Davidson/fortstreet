@@ -38,7 +38,7 @@ const ProductGridCard: React.FC<ProductGridCardProps> = ({
 
   return (
     <div className={`w-full max-w-sm mx-auto ${className}`}>
-      <a href={`/product/${product.id}`} className="group block">
+      <a href={`/product/${product.slug}`} className="group block">
         {/* Image Container */}
         <div className="relative aspect-square bg-gray-100 mb-4 overflow-hidden rounded-lg">
           <Image

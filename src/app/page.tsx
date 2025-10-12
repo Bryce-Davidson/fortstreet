@@ -2,8 +2,8 @@ import NavigationWrapper from "@/components/NavigationWrapper";
 import HeroCarousel from "@/components/HeroCarousel";
 import ProductSection from "@/components/ProductSection";
 import ProductRow from "@/components/ProductRow";
-import ProductRowCard from "@/components/ProductRowCard";
-import { latestProducts } from "@/data/products";
+import ProductRowCard, { Product } from "@/components/ProductRowCard";
+import { allProducts } from "@/data/products";
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       {/* Latest Products Section */}
       <ProductSection title="LATEST" viewAllLink="/collections">
         <ProductRow>
-          {latestProducts.map((product) => (
+          {allProducts.slice(0, 6).map((product) => (
             <ProductRowCard key={product.id} product={product} />
           ))}
         </ProductRow>
